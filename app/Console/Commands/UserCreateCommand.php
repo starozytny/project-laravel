@@ -3,31 +3,26 @@
 namespace App\Console\Commands;
 
 use App\Actions\User\CreateUserAction;
-use App\Models\User;
+use App\Enums\UserRole;
 use Illuminate\Console\Attributes\Description;
 use Illuminate\Console\Attributes\Signature;
 use Illuminate\Console\Command;
 use Illuminate\Support\Arr;
 use Illuminate\Validation\ValidationException;
 
+use function Laravel\Prompts\multiselect;
 use function Laravel\Prompts\password;
 use function Laravel\Prompts\text;
 
-#[Signature('user:create {--name=} {--email=}')]
+#[Signature('user:create {--name=} {--email=} {--role=* : Rôle(s) à attribuer}')]
 #[Description('Créer un utilisateur')]
 class UserCreateCommand extends Command
 {
     public function handle(CreateUserAction $createUserAction): int
     {
         $email = $this->askIfMissing('email', 'Adresse e-mail');
-
-        if (User::where('email', $email)->exists()) {
-            $this->error('Cette adresse e-mail est déjà utilisée.');
-
-            return self::FAILURE;
-        }
-
         $name = $this->askIfMissing('name', 'Nom');
+        $roles = $this->askRolesIfMissing();
         $password = password(label: 'Mot de passe', required: true);
         $passwordConfirmation = password(label: 'Confirmer le mot de passe', required: true);
 
@@ -37,6 +32,7 @@ class UserCreateCommand extends Command
                 'email' => $email,
                 'password' => $password,
                 'password_confirmation' => $passwordConfirmation,
+                'roles' => $roles,
             ]);
         } catch (ValidationException $e) {
             foreach (Arr::flatten($e->errors()) as $error) {
@@ -60,5 +56,28 @@ class UserCreateCommand extends Command
         }
 
         return text(label: $label, required: true);
+    }
+
+    /**
+     * @return array<int, string>
+     */
+    private function askRolesIfMissing(): array
+    {
+        $roles = $this->option('role');
+
+        if (is_array($roles) && $roles !== []) {
+            return array_values(array_filter($roles, 'is_string'));
+        }
+
+        $selected = multiselect(
+            label: 'Rôles',
+            options: collect(UserRole::cases())
+                ->mapWithKeys(fn (UserRole $role) => [$role->value => $role->label()])
+                ->all(),
+            default: [UserRole::User->value],
+            required: true,
+        );
+
+        return array_map(fn (int|string $role): string => UserRole::from($role)->value, $selected);
     }
 }
