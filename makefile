@@ -11,5 +11,15 @@ up: ## Démarre les conteneurs
 down: ## Arrête les conteneurs
 	$(SAIL) down
 
+hr: ## Lance le npm hot reload
+	$(SAIL) npm run dev
+
+ide-helper: ## Génere les helpers pour ide phpstorm
+	$(SAIL) artisan ide-helper:generate
+	$(SAIL) artisan ide-helper:models --nowrite
+
 npm-check: ## Check les fichiers
 	$(SAIL) npm run check
+
+pint-dirty: ## Corrige les pint
+	$(SAIL) bin pint --dirty
