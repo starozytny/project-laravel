@@ -26,3 +26,6 @@ sanity-php: ## Validation du code
 
 sanity-pint: ## Corrige la qualité du code
 	$(SAIL) bin pint --dirty
+
+route: ## Générate routes
+	$(SAIL) artisan wayfinder:generate --with-form
