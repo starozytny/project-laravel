@@ -22,7 +22,7 @@ export function UserSidebar() {
 
     const mainNavItems: NavItem[] = [
         {
-            title: 'Dashboard',
+            title: 'Tableau de bord',
             href: dashboardUser(),
             icon: LayoutGrid,
         },
@@ -45,7 +45,7 @@ export function UserSidebar() {
                     <SidebarMenuItem>
                         <SidebarMenuButton size="lg" asChild>
                             <Link href={dashboardUser()} prefetch>
-                                <AppLogo />
+                                <AppLogo nameLogo="Espace utilisateur" />
                             </Link>
                         </SidebarMenuButton>
                     </SidebarMenuItem>

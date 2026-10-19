@@ -19,7 +19,7 @@ import type { NavItem } from '@/types';
 
 const mainNavItems: NavItem[] = [
     {
-        title: 'Dashboard Admin',
+        title: 'Tableau de bord',
         href: dashboardAdmin(),
         icon: LayoutGrid,
     },
@@ -40,8 +40,8 @@ export function AdminSidebar() {
                 <SidebarMenu>
                     <SidebarMenuItem>
                         <SidebarMenuButton size="lg" asChild>
-                            <Link href={dashboardUser()} prefetch>
-                                <AppLogo />
+                            <Link href={dashboardAdmin()} prefetch>
+                                <AppLogo nameLogo="Administration" />
                             </Link>
                         </SidebarMenuButton>
                     </SidebarMenuItem>

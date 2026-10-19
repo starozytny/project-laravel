@@ -2,7 +2,7 @@ import { usePage } from '@inertiajs/react';
 
 import AppLogoIcon from '@/components/app-logo-icon';
 
-export default function AppLogo() {
+export default function AppLogo({ nameLogo }: { nameLogo?: string }) {
     const { name } = usePage().props;
 
     return (
@@ -12,7 +12,7 @@ export default function AppLogo() {
             </div>
             <div className="ml-1 grid flex-1 text-left text-sm">
                 <span className="mb-0.5 truncate leading-tight font-semibold">
-                    {name}
+                    {nameLogo ?? name}
                 </span>
             </div>
         </>
