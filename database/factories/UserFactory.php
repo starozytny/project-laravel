@@ -71,13 +71,21 @@ class UserFactory extends Factory
     }
 
     /**
+     * Indicate that the user has the given role instead of the default one
+     */
+    public function withRole(UserRole $role): static
+    {
+        return $this->afterCreating(function (User $user) use ($role): void {
+            $user->syncRoles(Role::findOrCreate($role->value));
+        });
+    }
+
+    /**
      * Configure role Admin
      */
     public function admin(): static
     {
-        return $this->afterCreating(function (User $user): void {
-            $user->syncRoles(Role::findOrCreate(UserRole::Admin->value));
-        });
+        return $this->withRole(UserRole::Admin);
     }
 
     /**
@@ -85,8 +93,6 @@ class UserFactory extends Factory
      */
     public function developer(): static
     {
-        return $this->afterCreating(function (User $user): void {
-            $user->syncRoles(Role::findOrCreate(UserRole::Developer->value));
-        });
+        return $this->withRole(UserRole::Developer);
     }
 }
