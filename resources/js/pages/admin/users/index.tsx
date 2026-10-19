@@ -13,6 +13,13 @@ import {
     TableHeader,
     TableRow,
 } from '@/components/ui/table';
+import {
+    Select,
+    SelectContent,
+    SelectItem,
+    SelectTrigger,
+    SelectValue,
+} from '@/components/ui/select';
 
 import { Paginated } from '@/types/pagination';
 import { AdminUser } from '@/types/admin/user';
@@ -21,10 +28,28 @@ import { index } from '@/routes/admin/users';
 
 type Props = {
     users: Paginated<AdminUser>;
-    filters: { search: string };
+    filters: {
+        search: string;
+        role: string;
+    };
+    roleOptions: {
+        value: string;
+        label: string;
+    }[];
 };
 
-export default function UsersIndex({ users, filters }: Props) {
+function applyFilters(search: string, role: string) {
+    router.get(
+        index().url,
+        {
+            search: search || undefined,
+            role: role || undefined,
+        },
+        { preserveState: true, preserveScroll: true, replace: true },
+    );
+}
+
+export default function UsersIndex({ users, filters, roleOptions }: Props) {
     const { data, links, meta } = users;
     const [search, setSearch] = useState(filters.search);
 
@@ -32,15 +57,13 @@ export default function UsersIndex({ users, filters }: Props) {
         if (search === filters.search) return;
 
         const timeout = setTimeout(() => {
-            router.get(
-                index().url,
-                { search: search || undefined },
-                { preserveState: true, preserveScroll: true, replace: true },
-            );
+            applyFilters(search, filters.role);
         }, 300);
 
         return () => clearTimeout(timeout);
     }, [search]);
+
+    const hasFilters = filters.search !== '' || filters.role !== '';
 
     return (
         <>
@@ -49,15 +72,39 @@ export default function UsersIndex({ users, filters }: Props) {
             <div className="flex flex-col gap-4 p-4">
                 <h1 className="text-xl font-semibold">Utilisateurs</h1>
 
-                <div className="relative max-w-sm">
-                    <Search className="absolute top-1/2 left-3 h-4 w-4 -translate-y-1/2 text-muted-foreground" />
-                    <Input
-                        type="search"
-                        value={search}
-                        onChange={(event) => setSearch(event.target.value)}
-                        placeholder="Rechercher par nom ou e-mail…"
-                        className="pl-9"
-                    />
+                <div className="flex flex-wrap gap-2">
+                    <div className="relative max-w-sm">
+                        <Search className="absolute top-1/2 left-3 h-4 w-4 -translate-y-1/2 text-muted-foreground" />
+                        <Input
+                            type="search"
+                            value={search}
+                            onChange={(event) => setSearch(event.target.value)}
+                            placeholder="Rechercher par nom ou e-mail…"
+                            className="pl-9"
+                        />
+                    </div>
+
+                    <Select
+                        value={filters.role || 'all'}
+                        onValueChange={(value) =>
+                            applyFilters(search, value === 'all' ? '' : value)
+                        }
+                    >
+                        <SelectTrigger className="w-48">
+                            <SelectValue />
+                        </SelectTrigger>
+                        <SelectContent>
+                            <SelectItem value="all">Tous les rôles</SelectItem>
+                            {roleOptions.map((option) => (
+                                <SelectItem
+                                    key={option.value}
+                                    value={option.value}
+                                >
+                                    {option.label}
+                                </SelectItem>
+                            ))}
+                        </SelectContent>
+                    </Select>
                 </div>
 
                 <div className="rounded-xl border border-sidebar-border/70 dark:border-sidebar-border">
@@ -76,10 +123,9 @@ export default function UsersIndex({ users, filters }: Props) {
                                         colSpan={3}
                                         className="h-24 text-center text-muted-foreground"
                                     >
-                                        Aucun utilisateur
-                                        {filters.search
-                                            ? ` ne correspond à « ${filters.search} ».`
-                                            : '.'}
+                                        {hasFilters
+                                            ? 'Aucun utilisateur ne correspond aux filtres.'
+                                            : 'Aucun utilisateur.'}
                                     </TableCell>
                                 </TableRow>
                             ) : (
