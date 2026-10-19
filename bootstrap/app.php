@@ -7,6 +7,8 @@ use Illuminate\Foundation\Configuration\Exceptions;
 use Illuminate\Foundation\Configuration\Middleware;
 use Illuminate\Http\Middleware\AddLinkHeadersForPreloadedAssets;
 use Illuminate\Http\Request;
+use Inertia\ExceptionResponse;
+use Inertia\Inertia;
 use Spatie\Permission\Middleware\PermissionMiddleware;
 use Spatie\Permission\Middleware\RoleMiddleware;
 use Spatie\Permission\Middleware\RoleOrPermissionMiddleware;
@@ -38,4 +40,21 @@ return Application::configure(basePath: dirname(__DIR__))
         $exceptions->shouldRenderJsonWhen(
             fn (Request $request) => $request->is('api/*') || $request->expectsJson(),
         );
+
+        Inertia::handleExceptionsUsing(function (ExceptionResponse $response): ?ExceptionResponse {
+            if ($response->request->expectsJson()) {
+                return null;
+            }
+
+            $status = $response->statusCode();
+
+            $isClientError = in_array($status, [403, 404], true);
+            $isServerError = in_array($status, [500, 503], true) && ! app()->hasDebugModeEnabled();
+
+            if (! $isClientError && ! $isServerError) {
+                return null;
+            }
+
+            return $response->render('errors/error', ['status' => $status])->withSharedData();
+        });
     })->create();
