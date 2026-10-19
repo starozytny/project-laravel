@@ -1,5 +1,5 @@
 import { Link } from '@inertiajs/react';
-import { LayoutGrid, User } from 'lucide-react';
+import { LayoutGrid, UserGroup } from 'lucide-react';
 import AppLogo from '@/components/app-logo';
 import { NavFooter } from '@/components/nav-footer';
 import { NavMain } from '@/components/nav-main';
@@ -27,7 +27,7 @@ const mainNavItems: NavItem[] = [
     {
         title: 'Utilisateurs',
         href: indexUsers(),
-        icon: User,
+        icon: UserGroup,
     },
 ];
 
