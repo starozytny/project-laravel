@@ -60,6 +60,9 @@ class UserFactory extends Factory
         ]);
     }
 
+    /**
+     * Configure role User
+     */
     public function configure(): static
     {
         return $this->afterCreating(function (User $user): void {
@@ -67,6 +70,9 @@ class UserFactory extends Factory
         });
     }
 
+    /**
+     * Configure role Admin
+     */
     public function admin(): static
     {
         return $this->afterCreating(function (User $user): void {
@@ -74,6 +80,9 @@ class UserFactory extends Factory
         });
     }
 
+    /**
+     * Configure role Developer
+     */
     public function developer(): static
     {
         return $this->afterCreating(function (User $user): void {
