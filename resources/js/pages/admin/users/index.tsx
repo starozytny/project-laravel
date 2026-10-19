@@ -1,6 +1,6 @@
 import { useEffect, useState } from 'react';
 import { Head, Link, router } from '@inertiajs/react';
-import { Plus, Search } from 'lucide-react';
+import { Pencil, Plus, Search } from 'lucide-react';
 
 import { Input } from '@/components/ui/input';
 import { Badge } from '@/components/ui/badge';
@@ -24,7 +24,7 @@ import {
 import { Paginated } from '@/types/pagination';
 import { AdminUser } from '@/types/admin/user';
 
-import { create, index } from '@/routes/admin/users';
+import { create, edit, index } from '@/routes/admin/users';
 
 type Props = {
     users: Paginated<AdminUser>;
@@ -122,13 +122,14 @@ export default function UsersIndex({ users, filters, roleOptions }: Props) {
                                 <TableHead>Nom</TableHead>
                                 <TableHead>Adresse e-mail</TableHead>
                                 <TableHead>Rôles</TableHead>
+                                <TableHead className="w-12" />
                             </TableRow>
                         </TableHeader>
                         <TableBody>
                             {data.length === 0 ? (
                                 <TableRow>
                                     <TableCell
-                                        colSpan={3}
+                                        colSpan={4}
                                         className="h-24 text-center text-muted-foreground"
                                     >
                                         {hasFilters
@@ -154,6 +155,13 @@ export default function UsersIndex({ users, filters, roleOptions }: Props) {
                                                     </Badge>
                                                 ))}
                                             </div>
+                                        </TableCell>
+                                        <TableCell>
+                                            <Button variant="ghost" size="icon" asChild>
+                                                <Link href={edit(user.id)} aria-label={`Modifier ${user.name}`}>
+                                                    <Pencil />
+                                                </Link>
+                                            </Button>
                                         </TableCell>
                                     </TableRow>
                                 ))
