@@ -2,10 +2,11 @@ import { Link, usePage } from '@inertiajs/react';
 import { LayoutGrid } from 'lucide-react';
 import AppLogo from '@/components/app-logo';
 import { NavMain } from '@/components/nav-main';
-import { NavUser } from "@/components/nav-user";
+import { NavUser } from '@/components/nav-user';
 import {
     Sidebar,
-    SidebarContent, SidebarFooter,
+    SidebarContent,
+    SidebarFooter,
     SidebarHeader,
     SidebarMenu,
     SidebarMenuButton,
@@ -14,7 +15,7 @@ import {
 import { dashboard as dashboardUser } from '@/routes/user';
 import { dashboard as dashboardAdmin } from '@/routes/admin';
 import type { NavItem } from '@/types';
-import { NavFooter } from "@/components/nav-footer";
+import { NavFooter } from '@/components/nav-footer';
 
 export function UserSidebar() {
     const { roles } = usePage().props.auth;
@@ -24,21 +25,18 @@ export function UserSidebar() {
             title: 'Dashboard',
             href: dashboardUser(),
             icon: LayoutGrid,
-        }
+        },
     ];
 
-    const footerNavItems: NavItem[] = [
-        ...(roles.includes('admin')
-            ? [
-                {
-                    title: 'Espace administrateur',
-                    href: dashboardAdmin(),
-                    icon: LayoutGrid,
-                }
-            ]
-            : []
-        )
-    ];
+    const footerNavItems: NavItem[] = roles.includes('admin')
+        ? [
+              {
+                  title: 'Espace administrateur',
+                  href: dashboardAdmin(),
+                  icon: LayoutGrid,
+              },
+          ]
+        : [];
 
     return (
         <Sidebar collapsible="icon" variant="inset">

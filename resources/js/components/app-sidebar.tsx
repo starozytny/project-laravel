@@ -1,4 +1,4 @@
-import { Link, usePage } from '@inertiajs/react';
+import { Link } from '@inertiajs/react';
 import { BookOpen, FolderGit2, LayoutGrid } from 'lucide-react';
 import AppLogo from '@/components/app-logo';
 import { NavFooter } from '@/components/nav-footer';
@@ -14,8 +14,15 @@ import {
     SidebarMenuItem,
 } from '@/components/ui/sidebar';
 import { dashboard as dashboardUser } from '@/routes/user';
-import { dashboard as dashboardAdmin } from '@/routes/admin';
 import type { NavItem } from '@/types';
+
+const mainNavItems: NavItem[] = [
+    {
+        title: 'Dashboard',
+        href: dashboardUser(),
+        icon: LayoutGrid,
+    },
+];
 
 const footerNavItems: NavItem[] = [
     {
@@ -31,25 +38,6 @@ const footerNavItems: NavItem[] = [
 ];
 
 export function AppSidebar() {
-    const { roles } = usePage().props.auth;
-
-    const mainNavItems: NavItem[] = [
-        {
-            title: 'Dashboard',
-            href: dashboardUser(),
-            icon: LayoutGrid,
-        },
-        ...(roles.includes('admin')
-            ? [
-                  {
-                      title: 'Dashboard Admin',
-                      href: dashboardAdmin(),
-                      icon: LayoutGrid,
-                  },
-              ]
-            : []),
-    ];
-
     return (
         <Sidebar collapsible="icon" variant="inset">
             <SidebarHeader>
