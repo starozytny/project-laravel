@@ -1,6 +1,6 @@
 import { useEffect, useState } from 'react';
 import { Head, Link, router } from '@inertiajs/react';
-import { Search } from 'lucide-react';
+import { Plus, Search } from 'lucide-react';
 
 import { Input } from '@/components/ui/input';
 import { Badge } from '@/components/ui/badge';
@@ -73,7 +73,10 @@ export default function UsersIndex({ users, filters, roleOptions }: Props) {
                 <div className="flex items-center justify-between">
                     <h1 className="text-xl font-semibold">Utilisateurs</h1>
                     <Button asChild>
-                        <Link href={create()}>Créer un utilisateur</Link>
+                        <Link href={create()}>
+                            <Plus />
+                            Créer un utilisateur
+                        </Link>
                     </Button>
                 </div>
 
