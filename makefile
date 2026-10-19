@@ -27,5 +27,9 @@ sanity-php: ## Validation du code
 sanity-pint: ## Corrige la qualité du code
 	$(SAIL) bin pint --dirty
 
+sanity-js: ## Vérifie les js
+	$(SAIL) npm run check:fix
+	$(SAIL) npm run types:check
+
 route: ## Générate routes
 	$(SAIL) artisan wayfinder:generate --with-form
