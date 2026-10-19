@@ -28,3 +28,16 @@ test('gives the admin dashboard priority when the user has several roles', funct
 
     expect($user->homeUrl())->toBe(route('admin.dashboard'));
 });
+
+test('grants a role to the roles above it', function () {
+    $developer = User::factory()->developer()->create();
+
+    expect($developer->hasRoleOrAbove(UserRole::Admin))->toBeTrue()
+        ->and($developer->hasRoleOrAbove(UserRole::User))->toBeTrue();
+});
+
+test('does not grant a role to the roles below it', function () {
+    $user = User::factory()->create();
+
+    expect($user->hasRoleOrAbove(UserRole::Admin))->toBeFalse();
+});

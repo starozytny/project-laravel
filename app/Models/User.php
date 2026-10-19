@@ -53,6 +53,14 @@ class User extends Authenticatable implements PasskeyUser
     }
 
     /**
+     * Determine if the user holds the given role or any role above it
+     */
+    public function hasRoleOrAbove(UserRole $role): bool
+    {
+        return $this->hasAnyRole($role->rolesGranting());
+    }
+
+    /**
      * Get the URL of the page the user lands on by default.
      */
     public function homeUrl(): string

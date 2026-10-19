@@ -15,7 +15,7 @@ export type Auth = {
     roles: string[];
     abilities: {
         accessAdmin: boolean;
-    }
+    };
 };
 
 export type Passkey = {
