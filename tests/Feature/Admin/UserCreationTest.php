@@ -22,7 +22,6 @@ function validUserInput(array $overrides = []): array
         'name' => 'Jean Dupont',
         'email' => 'jean@example.com',
         'password' => 'secret-password',
-        'password_confirmation' => 'secret-password',
         ...$overrides,
     ];
 }
@@ -100,7 +99,7 @@ test('rejects invalid input without creating a user', function (array $overrides
 })->with([
     'missing name' => [['name' => ''], 'name'],
     'invalid email' => [['email' => 'test'], 'email'],
-    'password confirmation mismatch' => [['password_confirmation' => 'another-password'], 'password'],
+    'weak password' => [['password' => 'short'], 'password'],
     'unknown role' => [['roles' => ['superman']], 'roles.0'],
     'empty roles' => [['roles' => []], 'roles'],
 ]);

@@ -14,7 +14,17 @@ trait PasswordValidationRules
      */
     protected function passwordRules(): array
     {
-        return ['required', 'string', Password::default(), 'confirmed'];
+        return [...$this->passwordStrengthRules(), 'confirmed'];
+    }
+
+    /**
+     * Get the validation rules for the strength of a password, without its confirmation.
+     *
+     * @return array<int, Password|ValidationRule|array<mixed>|string>
+     */
+    protected function passwordStrengthRules(): array
+    {
+        return ['required', 'string', Password::default()];
     }
 
     /**

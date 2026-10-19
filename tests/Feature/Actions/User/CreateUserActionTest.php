@@ -2,6 +2,7 @@
 
 use App\Actions\User\CreateUserAction;
 use Database\Seeders\RoleSeeder;
+use Illuminate\Validation\ValidationException;
 use Spatie\Permission\Exceptions\RoleDoesNotExist;
 use Spatie\Permission\PermissionRegistrar;
 
@@ -16,7 +17,6 @@ test('assigns the user role when no role is given', function () {
         'name' => 'Jean Dupont',
         'email' => 'jean@example.com',
         'password' => 'secret-password',
-        'password_confirmation' => 'secret-password',
     ]);
 
     expect($user->getRoleNames()->all())->toBe(['user']);
@@ -27,9 +27,18 @@ test('does not create the user when the role assignment fails', function () {
         'name' => 'Jean Dupont',
         'email' => 'jean@example.com',
         'password' => 'secret-password',
-        'password_confirmation' => 'secret-password',
         'roles' => ['admin'],
     ]))->toThrow(RoleDoesNotExist::class);
+
+    $this->assertDatabaseCount('users', 0);
+});
+
+test('rejects a weak password without creating the user', function () {
+    expect(fn () => app(CreateUserAction::class)->handle([
+        'name' => 'Jean Dupont',
+        'email' => 'jean@example.com',
+        'password' => 'short',
+    ]))->toThrow(ValidationException::class);
 
     $this->assertDatabaseCount('users', 0);
 });

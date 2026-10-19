@@ -9,7 +9,6 @@ use App\Models\User;
 use Illuminate\Support\Facades\DB;
 use Illuminate\Support\Facades\Validator;
 use Illuminate\Validation\Rule;
-use Throwable;
 
 class CreateUserAction
 {
@@ -18,15 +17,13 @@ class CreateUserAction
 
     /**
      * @param  array<string, mixed>  $input
-     *
-     * @throws Throwable
      */
     public function handle(array $input): User
     {
         Validator::make($input, [
             'name' => $this->nameRules(),
             'email' => $this->emailRules(),
-            'password' => $this->passwordRules(),
+            'password' => $this->passwordStrengthRules(),
             'roles' => ['sometimes', 'array', 'min:1'],
             'roles.*' => [Rule::enum(UserRole::class)],
         ])->validate();

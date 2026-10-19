@@ -24,14 +24,12 @@ class UserCreateCommand extends Command
         $name = $this->askIfMissing('name', 'Nom');
         $roles = $this->askRolesIfMissing();
         $password = password(label: 'Mot de passe', required: true);
-        $passwordConfirmation = password(label: 'Confirmer le mot de passe', required: true);
 
         try {
             $createUserAction->handle([
                 'name' => $name,
                 'email' => $email,
                 'password' => $password,
-                'password_confirmation' => $passwordConfirmation,
                 'roles' => $roles,
             ]);
         } catch (ValidationException $e) {

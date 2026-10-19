@@ -24,7 +24,7 @@ import {
 import { Paginated } from '@/types/pagination';
 import { AdminUser } from '@/types/admin/user';
 
-import { index } from '@/routes/admin/users';
+import { create, index } from '@/routes/admin/users';
 
 type Props = {
     users: Paginated<AdminUser>;
@@ -70,7 +70,12 @@ export default function UsersIndex({ users, filters, roleOptions }: Props) {
             <Head title="Utilisateurs" />
 
             <div className="flex flex-col gap-4 p-4">
-                <h1 className="text-xl font-semibold">Utilisateurs</h1>
+                <div className="flex items-center justify-between">
+                    <h1 className="text-xl font-semibold">Utilisateurs</h1>
+                    <Button asChild>
+                        <Link href={create()}>Créer un utilisateur</Link>
+                    </Button>
+                </div>
 
                 <div className="flex flex-wrap gap-2">
                     <div className="relative w-full max-w-sm">

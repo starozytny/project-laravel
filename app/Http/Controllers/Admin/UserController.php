@@ -59,7 +59,7 @@ class UserController extends Controller
      */
     public function store(Request $request, CreateUserAction $createUserAction): RedirectResponse
     {
-        $createUserAction->handle($request->only(['name', 'email', 'password', 'password_confirmation', 'roles']));
+        $createUserAction->handle($request->only(['name', 'email', 'password', 'roles']));
 
         Inertia::flash('toast', ['type' => 'success', 'message' => 'Utilisateur créé.']);
 

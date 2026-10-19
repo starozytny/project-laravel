@@ -1,4 +1,4 @@
-import { Form, Head } from '@inertiajs/react';
+import { Form, Head, Link } from '@inertiajs/react';
 
 import { Label } from '@/components/ui/label';
 import { Input } from '@/components/ui/input';
@@ -24,7 +24,7 @@ export default function UsersCreate({ roleOptions }: Props) {
 
                 <Form
                     {...store.form()}
-                    resetOnSuccess={['password', 'password_confirmation']}
+                    resetOnSuccess={['password']}
                     className="flex max-w-md flex-col gap-6"
                 >
                     {({ processing, errors }) => (
@@ -33,7 +33,7 @@ export default function UsersCreate({ roleOptions }: Props) {
                                 <Label htmlFor="name">Nom</Label>
                                 <Input
                                     id="name"
-                                    type="name"
+                                    type="text"
                                     name="name"
                                     required
                                     autoFocus
@@ -54,16 +54,13 @@ export default function UsersCreate({ roleOptions }: Props) {
                             </div>
 
                             <div className="grid gap-2">
-                                <div className="flex items-center">
-                                    <Label htmlFor="password">
-                                        Mot de passe
-                                    </Label>
-                                </div>
+                                <Label htmlFor="password">Mot de passe</Label>
                                 <PasswordInput
                                     id="password"
                                     name="password"
                                     required
                                     placeholder="Mot de passe"
+                                    autoComplete="new-password"
                                 />
                                 <InputError message={errors.password} />
                             </div>
@@ -91,15 +88,19 @@ export default function UsersCreate({ roleOptions }: Props) {
                                 <InputError message={errors.roles} />
                             </div>
 
-                            <Button
-                                type="submit"
-                                className="mt-4 w-full"
-                                disabled={processing}
-                                data-test="create-user-button"
-                            >
-                                {processing && <Spinner />}
-                                Créer l'utilisateur
-                            </Button>
+                            <div className="mt-4 flex gap-2">
+                                <Button variant="outline" asChild>
+                                    <Link href={index()}>Annuler</Link>
+                                </Button>
+                                <Button
+                                    type="submit"
+                                    disabled={processing}
+                                    data-test="create-user-button"
+                                >
+                                    {processing && <Spinner />}
+                                    Créer l'utilisateur
+                                </Button>
+                            </div>
                         </>
                     )}
                 </Form>

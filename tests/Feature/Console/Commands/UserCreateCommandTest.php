@@ -19,7 +19,6 @@ test('creates a user with a hashed password and the given roles', function () {
         '--role' => ['admin', 'developer'],
     ])
         ->expectsQuestion('Mot de passe', 'secret-password')
-        ->expectsQuestion('Confirmer le mot de passe', 'secret-password')
         ->expectsOutputToContain("L'utilisateur Jean Dupont a été créé avec succès.")
         ->assertSuccessful();
 
@@ -39,7 +38,6 @@ test('asks for the roles when none are given', function () {
             'user' => 'Utilisateur',
         ])
         ->expectsQuestion('Mot de passe', 'secret-password')
-        ->expectsQuestion('Confirmer le mot de passe', 'secret-password')
         ->assertSuccessful();
 
     $user = User::query()->where('email', 'jean@example.com')->firstOrFail();
@@ -50,7 +48,6 @@ test('asks for the roles when none are given', function () {
 test('rejects an invalid email address without creating a user', function () {
     $this->artisan('user:create', ['--name' => 'Jean Dupont', '--email' => 'test', '--role' => ['user']])
         ->expectsQuestion('Mot de passe', 'secret-password')
-        ->expectsQuestion('Confirmer le mot de passe', 'secret-password')
         ->expectsOutputToContain('Le champ email doit être une adresse e-mail valide.')
         ->assertFailed();
 
@@ -62,27 +59,15 @@ test('rejects an email address that is already used without creating a second us
 
     $this->artisan('user:create', ['--name' => 'Autre Jean', '--email' => 'jean@example.com', '--role' => ['user']])
         ->expectsQuestion('Mot de passe', 'secret-password')
-        ->expectsQuestion('Confirmer le mot de passe', 'secret-password')
         ->expectsOutputToContain('La valeur du champ email est déjà utilisée.')
         ->assertFailed();
 
     $this->assertDatabaseCount('users', 1);
 });
 
-test('rejects a password confirmation that does not match without creating a user', function () {
-    $this->artisan('user:create', ['--name' => 'Jean Dupont', '--email' => 'jean@example.com', '--role' => ['user']])
-        ->expectsQuestion('Mot de passe', 'secret-password')
-        ->expectsQuestion('Confirmer le mot de passe', 'another-password')
-        ->expectsOutputToContain('Le champ de confirmation password ne correspond pas.')
-        ->assertFailed();
-
-    $this->assertDatabaseCount('users', 0);
-});
-
 test('rejects an unknown role without creating a user', function () {
     $this->artisan('user:create', ['--name' => 'Jean Dupont', '--email' => 'jean@example.com', '--role' => ['superman']])
         ->expectsQuestion('Mot de passe', 'secret-password')
-        ->expectsQuestion('Confirmer le mot de passe', 'secret-password')
         ->assertFailed();
 
     $this->assertDatabaseCount('users', 0);
