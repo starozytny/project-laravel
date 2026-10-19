@@ -1,5 +1,8 @@
-import { Head, Link } from '@inertiajs/react';
+import { useEffect, useState } from 'react';
+import { Head, Link, router } from '@inertiajs/react';
+import { Search } from 'lucide-react';
 
+import { Input } from '@/components/ui/input';
 import { Badge } from '@/components/ui/badge';
 import { Button } from '@/components/ui/button';
 import {
@@ -18,10 +21,26 @@ import { index } from '@/routes/admin/users';
 
 type Props = {
     users: Paginated<AdminUser>;
+    filters: { search: string };
 };
 
-export default function UsersIndex({ users }: Props) {
+export default function UsersIndex({ users, filters }: Props) {
     const { data, links, meta } = users;
+    const [search, setSearch] = useState(filters.search);
+
+    useEffect(() => {
+        if (search === filters.search) return;
+
+        const timeout = setTimeout(() => {
+            router.get(
+                index().url,
+                { search: search || undefined },
+                { preserveState: true, preserveScroll: true, replace: true },
+            );
+        }, 300);
+
+        return () => clearTimeout(timeout);
+    }, [search]);
 
     return (
         <>
@@ -29,6 +48,17 @@ export default function UsersIndex({ users }: Props) {
 
             <div className="flex flex-col gap-4 p-4">
                 <h1 className="text-xl font-semibold">Utilisateurs</h1>
+
+                <div className="relative max-w-sm">
+                    <Search className="absolute top-1/2 left-3 h-4 w-4 -translate-y-1/2 text-muted-foreground" />
+                    <Input
+                        type="search"
+                        value={search}
+                        onChange={(event) => setSearch(event.target.value)}
+                        placeholder="Rechercher par nom ou e-mail…"
+                        className="pl-9"
+                    />
+                </div>
 
                 <div className="rounded-xl border border-sidebar-border/70 dark:border-sidebar-border">
                     <Table>
@@ -46,7 +76,10 @@ export default function UsersIndex({ users }: Props) {
                                         colSpan={3}
                                         className="h-24 text-center text-muted-foreground"
                                     >
-                                        Aucun utilisateur.
+                                        Aucun utilisateur
+                                        {filters.search
+                                            ? ` ne correspond à « ${filters.search} ».`
+                                            : '.'}
                                     </TableCell>
                                 </TableRow>
                             ) : (

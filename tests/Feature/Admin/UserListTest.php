@@ -110,3 +110,60 @@ test('loads roles with a constant number of queries', function () {
 
     expect($countQueries())->toBe($queriesWithOneUser);
 });
+
+test('filters users by name or email regardless of case', function (string $search) {
+    $admin = User::factory()->admin()->create(['name' => 'Zoe', 'email' => 'zoe@example.com']);
+    User::factory()->create(['name' => 'Jean Dupont', 'email' => 'jd@example.com']);
+    User::factory()->create(['name' => 'Alice', 'email' => 'jean.alice@example.com']);
+    User::factory()->create(['name' => 'Bob', 'email' => 'bob@example.com']);
+
+    $this->actingAs($admin)
+        ->get(route('admin.users.index', ['search' => $search]))
+        ->assertInertia(fn (Assert $page) => $page
+            ->has('users.data', 2)
+            ->where('users.data.0.name', 'Alice')
+            ->where('users.data.1.name', 'Jean Dupont')
+            ->where('filters.search', trim($search))
+        );
+})->with([
+    'lowercase' => 'jean',
+    'uppercase' => 'JEAN',
+    'surrounded by spaces' => '  jean  ',
+]);
+
+test('returns an empty list when nothing matches the search', function () {
+    $admin = User::factory()->admin()->create();
+
+    $this->actingAs($admin)
+        ->get(route('admin.users.index', ['search' => 'introuvable']))
+        ->assertInertia(fn (Assert $page) => $page
+            ->has('users.data', 0)
+            ->where('users.meta.total', 0)
+            ->where('filters.search', 'introuvable')
+        );
+});
+
+test('returns an empty search filter and every user when no search is given', function () {
+    $admin = User::factory()->admin()->create();
+    User::factory()->count(2)->create();
+
+    $this->actingAs($admin)
+        ->get(route('admin.users.index'))
+        ->assertInertia(fn (Assert $page) => $page
+            ->has('users.data', 3)
+            ->where('filters.search', '')
+        );
+});
+
+test('keeps the search in the pagination links', function () {
+    $admin = User::factory()->admin()->create(['name' => 'Zoe']);
+    User::factory()->count(25)->create(['name' => 'Match']);
+
+    $this->actingAs($admin)
+        ->get(route('admin.users.index', ['search' => 'match']))
+        ->assertInertia(fn (Assert $page) => $page
+            ->has('users.data', 20)
+            ->where('users.meta.total', 25)
+            ->where('users.links.next', route('admin.users.index', ['search' => 'match', 'page' => 2]))
+        );
+});
