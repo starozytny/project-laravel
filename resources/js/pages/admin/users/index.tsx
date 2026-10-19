@@ -1,5 +1,5 @@
 import { useEffect, useState } from 'react';
-import { Head, Link, router } from '@inertiajs/react';
+import { Head, Link, router, usePage } from '@inertiajs/react';
 import { Pencil, Plus, Search } from 'lucide-react';
 
 import IconLinkButton from '@/components/icon-link-button';
@@ -26,6 +26,7 @@ import { Paginated } from '@/types/pagination';
 import { AdminUser } from '@/types/admin/user';
 
 import { create, edit, index } from '@/routes/admin/users';
+import DeleteUserDialog from '@/components/admin/user/delete-user-dialog';
 
 type Props = {
     users: Paginated<AdminUser>;
@@ -51,6 +52,7 @@ function applyFilters(search: string, role: string) {
 }
 
 export default function UsersIndex({ users, filters, roleOptions }: Props) {
+    const { auth } = usePage().props;
     const { data, links, meta } = users;
     const [search, setSearch] = useState(filters.search);
 
@@ -160,12 +162,19 @@ export default function UsersIndex({ users, filters, roleOptions }: Props) {
                                             </div>
                                         </TableCell>
                                         <TableCell>
-                                            <IconLinkButton
-                                                href={edit(user.id)}
-                                                icon={Pencil}
-                                                label="Modifier"
-                                                ariaLabel={`Modifier ${user.name}`}
-                                            />
+                                            <div className="flex justify-end">
+                                                <IconLinkButton
+                                                    href={edit(user.id)}
+                                                    icon={Pencil}
+                                                    label="Modifier"
+                                                    ariaLabel={`Modifier ${user.name}`}
+                                                />
+                                                {user.id !== auth.user.id && (
+                                                    <DeleteUserDialog
+                                                        user={user}
+                                                    />
+                                                )}
+                                            </div>
                                         </TableCell>
                                     </TableRow>
                                 ))
