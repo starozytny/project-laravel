@@ -73,7 +73,7 @@ export default function UsersIndex({ users, filters, roleOptions }: Props) {
                 <h1 className="text-xl font-semibold">Utilisateurs</h1>
 
                 <div className="flex flex-wrap gap-2">
-                    <div className="relative max-w-sm">
+                    <div className="relative w-full max-w-sm">
                         <Search className="absolute top-1/2 left-3 h-4 w-4 -translate-y-1/2 text-muted-foreground" />
                         <Input
                             type="search"
