@@ -57,7 +57,7 @@ export default function UsersIndex({ users }: Props) {
                                         </TableCell>
                                         <TableCell>{user.email}</TableCell>
                                         <TableCell>
-                                            <div className="flex gap-1">
+                                            <div className="flex flex-wrap gap-1">
                                                 {user.roles.map((role) => (
                                                     <Badge
                                                         key={role.value}
