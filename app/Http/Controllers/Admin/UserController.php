@@ -10,6 +10,7 @@ use App\Http\Resources\UserResource;
 use App\Models\User;
 use Illuminate\Http\RedirectResponse;
 use Illuminate\Http\Request;
+use Illuminate\Support\Facades\Gate;
 use Inertia\Inertia;
 use Inertia\Response;
 
@@ -93,6 +94,20 @@ class UserController extends Controller
         $updateUserAction->handle($user, $input);
 
         Inertia::flash('toast', ['type' => 'success', 'message' => 'Utilisateur modifié.']);
+
+        return to_route('admin.users.index');
+    }
+
+    /**
+     * Delete a user
+     */
+    public function destroy(User $user): RedirectResponse
+    {
+        Gate::authorize('delete', $user);
+
+        $user->delete();
+
+        Inertia::flash('toast', ['type' => 'success', 'message' => 'Utilisateur supprimé.']);
 
         return to_route('admin.users.index');
     }

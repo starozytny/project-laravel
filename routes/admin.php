@@ -18,5 +18,6 @@ Route::middleware(['auth', 'verified', 'can:access-admin'])
                 Route::post('/', 'store')->name('store');
                 Route::get('{user}/modifier', 'edit')->name('edit');
                 Route::put('{user}', 'update')->name('update');
+                Route::delete('{user}', 'destroy')->name('destroy');
             });
     });
