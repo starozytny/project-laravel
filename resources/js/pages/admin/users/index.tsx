@@ -157,8 +157,15 @@ export default function UsersIndex({ users, filters, roleOptions }: Props) {
                                             </div>
                                         </TableCell>
                                         <TableCell>
-                                            <Button variant="ghost" size="icon" asChild>
-                                                <Link href={edit(user.id)} aria-label={`Modifier ${user.name}`}>
+                                            <Button
+                                                variant="ghost"
+                                                size="icon"
+                                                asChild
+                                            >
+                                                <Link
+                                                    href={edit(user.id)}
+                                                    aria-label={`Modifier ${user.name}`}
+                                                >
                                                     <Pencil />
                                                 </Link>
                                             </Button>

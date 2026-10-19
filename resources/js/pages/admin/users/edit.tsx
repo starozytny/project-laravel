@@ -17,14 +17,22 @@ export default function UsersEdit({ user, isSelf, roleOptions }: Props) {
         <>
             <Head title="Modifier un utilisateur" />
             <div className="flex flex-col gap-4 p-4">
-                <h1 className="text-xl font-semibold">Modifier un utilisateur</h1>
+                <h1 className="text-xl font-semibold">
+                    Modifier un utilisateur
+                </h1>
 
                 <Form
                     {...update.form(user.id)}
                     className="flex max-w-md flex-col gap-6"
                 >
                     {({ processing, errors }) => (
-                        <UserForm roleOptions={roleOptions} processing={processing} errors={errors} user={user} isSelf={isSelf} />
+                        <UserForm
+                            roleOptions={roleOptions}
+                            processing={processing}
+                            errors={errors}
+                            user={user}
+                            isSelf={isSelf}
+                        />
                     )}
                 </Form>
             </div>

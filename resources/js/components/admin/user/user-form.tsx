@@ -16,12 +16,18 @@ import { index } from '@/routes/admin/users';
 type Props = {
     roleOptions: { value: string; label: string }[];
     processing: boolean;
-    errors: Partial<Record<string, string>>
+    errors: Partial<Record<string, string>>;
     user?: AdminUser;
     isSelf?: boolean;
 };
 
-export default function UserForm({ roleOptions, processing, errors, user, isSelf = false }: Props) {
+export default function UserForm({
+    roleOptions,
+    processing,
+    errors,
+    user,
+    isSelf = false,
+}: Props) {
     return (
         <>
             <div className="grid gap-2">
@@ -66,11 +72,12 @@ export default function UserForm({ roleOptions, processing, errors, user, isSelf
 
             <div className="grid gap-2">
                 <Label>Rôles</Label>
-                {isSelf
-                    ? <div className="text-sm text-muted-foreground">
+                {isSelf ? (
+                    <div className="text-sm text-muted-foreground">
                         Vous ne pouvez pas modifier vos propres rôles
                     </div>
-                    : roleOptions.map((option) => (
+                ) : (
+                    roleOptions.map((option) => (
                         <div
                             key={option.value}
                             className="flex items-center gap-2"
@@ -81,7 +88,10 @@ export default function UserForm({ roleOptions, processing, errors, user, isSelf
                                 value={option.value}
                                 defaultChecked={
                                     user
-                                        ? user.roles.some((role) => role.value === option.value)
+                                        ? user.roles.some(
+                                              (role) =>
+                                                  role.value === option.value,
+                                          )
                                         : option.value === 'user'
                                 }
                             />
@@ -90,7 +100,7 @@ export default function UserForm({ roleOptions, processing, errors, user, isSelf
                             </Label>
                         </div>
                     ))
-                }
+                )}
                 <InputError message={errors.roles} />
             </div>
 
@@ -104,10 +114,7 @@ export default function UserForm({ roleOptions, processing, errors, user, isSelf
                     data-test="submit-user-button"
                 >
                     {processing && <Spinner />}
-                    {user
-                        ? "Enregistrer"
-                        : "Créer l'utilisateur"
-                    }
+                    {user ? 'Enregistrer' : "Créer l'utilisateur"}
                 </Button>
             </div>
         </>

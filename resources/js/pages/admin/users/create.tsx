@@ -20,7 +20,11 @@ export default function UsersCreate({ roleOptions }: Props) {
                     className="flex max-w-md flex-col gap-6"
                 >
                     {({ processing, errors }) => (
-                        <UserForm roleOptions={roleOptions} processing={processing} errors={errors} />
+                        <UserForm
+                            roleOptions={roleOptions}
+                            processing={processing}
+                            errors={errors}
+                        />
                     )}
                 </Form>
             </div>
