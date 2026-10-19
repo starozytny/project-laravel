@@ -2,14 +2,10 @@ import { useEffect, useState } from 'react';
 import { Head, Link, router } from '@inertiajs/react';
 import { Pencil, Plus, Search } from 'lucide-react';
 
+import IconLinkButton from '@/components/icon-link-button';
 import { Input } from '@/components/ui/input';
 import { Badge } from '@/components/ui/badge';
 import { Button } from '@/components/ui/button';
-import {
-    Tooltip,
-    TooltipContent,
-    TooltipTrigger,
-} from '@/components/ui/tooltip';
 import {
     Table,
     TableBody,
@@ -164,25 +160,12 @@ export default function UsersIndex({ users, filters, roleOptions }: Props) {
                                             </div>
                                         </TableCell>
                                         <TableCell>
-                                            <Tooltip delayDuration={300}>
-                                                <TooltipTrigger asChild>
-                                                    <Button
-                                                        variant="ghost"
-                                                        size="icon"
-                                                        asChild
-                                                    >
-                                                        <Link
-                                                            href={edit(user.id)}
-                                                            aria-label={`Modifier ${user.name}`}
-                                                        >
-                                                            <Pencil />
-                                                        </Link>
-                                                    </Button>
-                                                </TooltipTrigger>
-                                                <TooltipContent>
-                                                    Modifier
-                                                </TooltipContent>
-                                            </Tooltip>
+                                            <IconLinkButton
+                                                href={edit(user.id)}
+                                                icon={Pencil}
+                                                label="Modifier"
+                                                ariaLabel={`Modifier ${user.name}`}
+                                            />
                                         </TableCell>
                                     </TableRow>
                                 ))
