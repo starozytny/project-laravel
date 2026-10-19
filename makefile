@@ -21,8 +21,8 @@ ide-helper: ## Génere les helpers pour ide phpstorm
 npm-check: ## Check les fichiers
 	$(SAIL) npm run check
 
-php-sanity: ## Validation du code
+sanity-php: ## Validation du code
 	$(SAIL) bin phpstan analyse
 
-pint-sanity: ## Corrige la qualité du code
+sanity-pint: ## Corrige la qualité du code
 	$(SAIL) bin pint --dirty
