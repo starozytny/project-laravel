@@ -16,5 +16,7 @@ Route::middleware(['auth', 'verified', 'can:access-admin'])
                 Route::get('/', 'index')->name('index');
                 Route::get('creer', 'create')->name('create');
                 Route::post('/', 'store')->name('store');
+                Route::get('{user}/modifier', 'edit')->name('edit');
+                Route::put('{user}', 'update')->name('update');
             });
     });
