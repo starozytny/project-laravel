@@ -2,18 +2,25 @@ import { Head, Link } from '@inertiajs/react';
 
 import { Badge } from '@/components/ui/badge';
 import { Button } from '@/components/ui/button';
-import { Table, TableBody, TableCell, TableHead, TableHeader, TableRow } from '@/components/ui/table';
+import {
+    Table,
+    TableBody,
+    TableCell,
+    TableHead,
+    TableHeader,
+    TableRow,
+} from '@/components/ui/table';
 
 import { Paginated } from '@/types/pagination';
 import { AdminUser } from '@/types/admin/user';
 
-import { index } from '@/routes/admin/users'
+import { index } from '@/routes/admin/users';
 
 type Props = {
-    users: Paginated<AdminUser>
-}
+    users: Paginated<AdminUser>;
+};
 
-export default function UsersIndex ({ users }: Props) {
+export default function UsersIndex({ users }: Props) {
     const { data, links, meta } = users;
 
     return (
@@ -45,11 +52,16 @@ export default function UsersIndex ({ users }: Props) {
                             ) : (
                                 data.map((user) => (
                                     <TableRow key={user.id}>
-                                        <TableCell className="font-medium">{user.name}</TableCell>
+                                        <TableCell className="font-medium">
+                                            {user.name}
+                                        </TableCell>
                                         <TableCell>{user.email}</TableCell>
                                         <TableCell className="flex gap-1">
                                             {user.roles.map((role) => (
-                                                <Badge key={role.value} variant="secondary">
+                                                <Badge
+                                                    key={role.value}
+                                                    variant="secondary"
+                                                >
                                                     {role.label}
                                                 </Badge>
                                             ))}
@@ -62,21 +74,35 @@ export default function UsersIndex ({ users }: Props) {
                 </div>
 
                 <div className="flex items-center justify-between text-sm text-muted-foreground">
-                      <span>
-                          {meta.from ?? 0}–{meta.to ?? 0} sur {meta.total}
-                      </span>
+                    <span>
+                        {meta.from ?? 0}–{meta.to ?? 0} sur {meta.total}
+                    </span>
                     <div className="flex gap-2">
-                        <Button variant="outline" size="sm" asChild disabled={!links.prev}>
-                            <Link href={links.prev ?? '#'} preserveScroll>Précédent</Link>
+                        <Button
+                            variant="outline"
+                            size="sm"
+                            asChild
+                            disabled={!links.prev}
+                        >
+                            <Link href={links.prev ?? '#'} preserveScroll>
+                                Précédent
+                            </Link>
                         </Button>
-                        <Button variant="outline" size="sm" asChild disabled={!links.next}>
-                            <Link href={links.next ?? '#'} preserveScroll>Suivant</Link>
+                        <Button
+                            variant="outline"
+                            size="sm"
+                            asChild
+                            disabled={!links.next}
+                        >
+                            <Link href={links.next ?? '#'} preserveScroll>
+                                Suivant
+                            </Link>
                         </Button>
                     </div>
                 </div>
             </div>
         </>
-    )
+    );
 }
 
 UsersIndex.layout = {
