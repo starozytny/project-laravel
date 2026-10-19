@@ -6,6 +6,11 @@ import { Input } from '@/components/ui/input';
 import { Badge } from '@/components/ui/badge';
 import { Button } from '@/components/ui/button';
 import {
+    Tooltip,
+    TooltipContent,
+    TooltipTrigger,
+} from '@/components/ui/tooltip';
+import {
     Table,
     TableBody,
     TableCell,
@@ -122,7 +127,9 @@ export default function UsersIndex({ users, filters, roleOptions }: Props) {
                                 <TableHead>Nom</TableHead>
                                 <TableHead>Adresse e-mail</TableHead>
                                 <TableHead>Rôles</TableHead>
-                                <TableHead className="w-12" />
+                                <TableHead className="w-12">
+                                    <span className="sr-only">Actions</span>
+                                </TableHead>
                             </TableRow>
                         </TableHeader>
                         <TableBody>
@@ -157,18 +164,25 @@ export default function UsersIndex({ users, filters, roleOptions }: Props) {
                                             </div>
                                         </TableCell>
                                         <TableCell>
-                                            <Button
-                                                variant="ghost"
-                                                size="icon"
-                                                asChild
-                                            >
-                                                <Link
-                                                    href={edit(user.id)}
-                                                    aria-label={`Modifier ${user.name}`}
-                                                >
-                                                    <Pencil />
-                                                </Link>
-                                            </Button>
+                                            <Tooltip delayDuration={300}>
+                                                <TooltipTrigger asChild>
+                                                    <Button
+                                                        variant="ghost"
+                                                        size="icon"
+                                                        asChild
+                                                    >
+                                                        <Link
+                                                            href={edit(user.id)}
+                                                            aria-label={`Modifier ${user.name}`}
+                                                        >
+                                                            <Pencil />
+                                                        </Link>
+                                                    </Button>
+                                                </TooltipTrigger>
+                                                <TooltipContent>
+                                                    Modifier
+                                                </TooltipContent>
+                                            </Tooltip>
                                         </TableCell>
                                     </TableRow>
                                 ))
