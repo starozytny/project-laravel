@@ -65,7 +65,7 @@ test('creates a user with the default role and a hashed password', function () {
     $this->actingAs($admin)
         ->post(route('admin.users.store'), validUserInput())
         ->assertRedirect(route('admin.users.index'))
-        ->assertSessionHas('success', 'Utilisateur créé.');
+        ->assertInertiaFlash('toast', ['type' => 'success', 'message' => 'Utilisateur créé.']);
 
     $user = User::query()->where('email', 'jean@example.com')->firstOrFail();
 

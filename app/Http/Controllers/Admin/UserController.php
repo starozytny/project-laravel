@@ -61,6 +61,8 @@ class UserController extends Controller
     {
         $createUserAction->handle($request->only(['name', 'email', 'password', 'password_confirmation', 'roles']));
 
-        return to_route('admin.users.index')->with('success', 'Utilisateur créé.');
+        Inertia::flash('toast', ['type' => 'success', 'message' => 'Utilisateur créé.']);
+
+        return to_route('admin.users.index');
     }
 }
