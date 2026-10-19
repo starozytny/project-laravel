@@ -53,6 +53,9 @@ class User extends Authenticatable implements PasskeyUser
         ];
     }
 
+    /**
+     * Get the URL of the page the user lands on by default.
+     */
     public function homeUrl(): string
     {
         if ($this->hasRole(UserRole::Admin)) {
