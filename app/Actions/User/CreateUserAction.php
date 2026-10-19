@@ -9,6 +9,7 @@ use App\Models\User;
 use Illuminate\Support\Facades\DB;
 use Illuminate\Support\Facades\Validator;
 use Illuminate\Validation\Rule;
+use Throwable;
 
 class CreateUserAction
 {
@@ -16,7 +17,9 @@ class CreateUserAction
     use ProfileValidationRules;
 
     /**
-     * @param  array{name: string, email: string, password: string, password_confirmation: string, roles?: array<int, string>}  $input
+     * @param  array<string, mixed>  $input
+     *
+     * @throws Throwable
      */
     public function handle(array $input): User
     {

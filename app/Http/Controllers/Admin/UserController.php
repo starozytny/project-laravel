@@ -2,10 +2,12 @@
 
 namespace App\Http\Controllers\Admin;
 
+use App\Actions\User\CreateUserAction;
 use App\Enums\UserRole;
 use App\Http\Controllers\Controller;
 use App\Http\Resources\UserResource;
 use App\Models\User;
+use Illuminate\Http\RedirectResponse;
 use Illuminate\Http\Request;
 use Inertia\Inertia;
 use Inertia\Response;
@@ -38,10 +40,27 @@ class UserController extends Controller
                 'search' => $search,
                 'role' => $role->value ?? '',
             ],
-            'roleOptions' => collect(UserRole::cases())->map(fn (UserRole $role): array => [
-                'value' => $role->value,
-                'label' => $role->label(),
-            ])->all(),
+            'roleOptions' => UserRole::options(),
         ]);
+    }
+
+    /**
+     * Create a user
+     */
+    public function create(): Response
+    {
+        return Inertia::render('admin/users/create', [
+            'roleOptions' => UserRole::options(),
+        ]);
+    }
+
+    /**
+     * Store a user
+     */
+    public function store(Request $request, CreateUserAction $createUserAction): RedirectResponse
+    {
+        $createUserAction->handle($request->only(['name', 'email', 'password', 'password_confirmation', 'roles']));
+
+        return to_route('admin.users.index')->with('success', 'Utilisateur créé.');
     }
 }
