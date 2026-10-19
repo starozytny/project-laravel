@@ -56,15 +56,17 @@ export default function UsersIndex({ users }: Props) {
                                             {user.name}
                                         </TableCell>
                                         <TableCell>{user.email}</TableCell>
-                                        <TableCell className="flex gap-1">
-                                            {user.roles.map((role) => (
-                                                <Badge
-                                                    key={role.value}
-                                                    variant="secondary"
-                                                >
-                                                    {role.label}
-                                                </Badge>
-                                            ))}
+                                        <TableCell>
+                                            <div className="flex gap-1">
+                                                {user.roles.map((role) => (
+                                                    <Badge
+                                                        key={role.value}
+                                                        variant="secondary"
+                                                    >
+                                                        {role.label}
+                                                    </Badge>
+                                                ))}
+                                            </div>
                                         </TableCell>
                                     </TableRow>
                                 ))
@@ -78,26 +80,28 @@ export default function UsersIndex({ users }: Props) {
                         {meta.from ?? 0}–{meta.to ?? 0} sur {meta.total}
                     </span>
                     <div className="flex gap-2">
-                        <Button
-                            variant="outline"
-                            size="sm"
-                            asChild
-                            disabled={!links.prev}
-                        >
-                            <Link href={links.prev ?? '#'} preserveScroll>
+                        {links.prev ? (
+                            <Button variant="outline" size="sm" asChild>
+                                <Link href={links.prev} preserveScroll>
+                                    Précédent
+                                </Link>
+                            </Button>
+                        ) : (
+                            <Button variant="outline" size="sm" disabled>
                                 Précédent
-                            </Link>
-                        </Button>
-                        <Button
-                            variant="outline"
-                            size="sm"
-                            asChild
-                            disabled={!links.next}
-                        >
-                            <Link href={links.next ?? '#'} preserveScroll>
+                            </Button>
+                        )}
+                        {links.next ? (
+                            <Button variant="outline" size="sm" asChild>
+                                <Link href={links.next} preserveScroll>
+                                    Suivant
+                                </Link>
+                            </Button>
+                        ) : (
+                            <Button variant="outline" size="sm" disabled>
                                 Suivant
-                            </Link>
-                        </Button>
+                            </Button>
+                        )}
                     </div>
                 </div>
             </div>
