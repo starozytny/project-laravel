@@ -2,6 +2,7 @@
 
 namespace App\Http\Controllers\Admin;
 
+use App\Enums\UserRole;
 use App\Http\Controllers\Controller;
 use App\Http\Resources\UserResource;
 use App\Models\User;
@@ -17,6 +18,7 @@ class UserController extends Controller
     public function index(Request $request): Response
     {
         $search = $request->string('search')->trim()->toString();
+        $role = UserRole::tryFrom($request->string('role')->toString());
 
         $users = User::query()
             ->when($search !== '', fn ($query) => $query->where(
@@ -24,6 +26,7 @@ class UserController extends Controller
                     ->whereLike('name', "%{$search}%")
                     ->orWhereLike('email', "%{$search}%")
             ))
+            ->when($role, fn ($query) => $query->role($role->value))
             ->with('roles')
             ->orderBy('name')
             ->paginate(20)
@@ -33,7 +36,12 @@ class UserController extends Controller
             'users' => UserResource::collection($users),
             'filters' => [
                 'search' => $search,
+                'role' => $role->value ?? '',
             ],
+            'roleOptions' => collect(UserRole::cases())->map(fn (UserRole $role): array => [
+                'value' => $role->value,
+                'label' => $role->label(),
+            ])->all(),
         ]);
     }
 }

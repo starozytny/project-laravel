@@ -167,3 +167,85 @@ test('keeps the search in the pagination links', function () {
             ->where('users.links.next', route('admin.users.index', ['search' => 'match', 'page' => 2]))
         );
 });
+
+test('filters users by role', function (UserRole $role, string $label) {
+    $admin = User::factory()->admin()->create(['name' => 'Zoe']);
+    User::factory()->developer()->create(['name' => 'Dev']);
+    User::factory()->create(['name' => 'Alice']);
+
+    $this->actingAs($admin)
+        ->get(route('admin.users.index', ['role' => $role->value]))
+        ->assertInertia(fn (Assert $page) => $page
+            ->has('users.data', 1)
+            ->where('users.data.0.roles.0.label', $label)
+            ->where('filters.role', $role->value)
+        );
+})->with([
+    'developer' => [UserRole::Developer, 'Développeur'],
+    'admin' => [UserRole::Admin, 'Administrateur'],
+    'user' => [UserRole::User, 'Utilisateur'],
+]);
+
+test('finds a user holding several roles through each of them', function () {
+    $admin = User::factory()->admin()->create(['name' => 'Zoe']);
+    User::factory()->developer()->create(['name' => 'Multi'])->assignRole(UserRole::User->value);
+
+    $this->actingAs($admin)
+        ->get(route('admin.users.index', ['role' => UserRole::User->value]))
+        ->assertInertia(fn (Assert $page) => $page
+            ->has('users.data', 1)
+            ->where('users.data.0.name', 'Multi')
+            ->has('users.data.0.roles', 2)
+        );
+});
+
+test('ignores an unknown role', function () {
+    $admin = User::factory()->admin()->create();
+    User::factory()->count(2)->create();
+
+    $this->actingAs($admin)
+        ->get(route('admin.users.index', ['role' => 'superman']))
+        ->assertOk()
+        ->assertInertia(fn (Assert $page) => $page
+            ->has('users.data', 3)
+            ->where('filters.role', '')
+        );
+});
+
+test('combines the search and the role filter', function () {
+    $admin = User::factory()->admin()->create(['name' => 'Zoe']);
+    User::factory()->admin()->create(['name' => 'Jean Admin']);
+    User::factory()->create(['name' => 'Jean Simple']);
+    User::factory()->admin()->create(['name' => 'Bob']);
+
+    $this->actingAs($admin)
+        ->get(route('admin.users.index', ['search' => 'jean', 'role' => UserRole::Admin->value]))
+        ->assertInertia(fn (Assert $page) => $page
+            ->has('users.data', 1)
+            ->where('users.data.0.name', 'Jean Admin')
+        );
+});
+
+test('shares the role options with their labels', function () {
+    $admin = User::factory()->admin()->create();
+
+    $this->actingAs($admin)
+        ->get(route('admin.users.index'))
+        ->assertInertia(fn (Assert $page) => $page->where('roleOptions', [
+            ['value' => 'developer', 'label' => 'Développeur'],
+            ['value' => 'admin', 'label' => 'Administrateur'],
+            ['value' => 'user', 'label' => 'Utilisateur'],
+        ]));
+});
+
+test('keeps the role filter in the pagination links', function () {
+    $admin = User::factory()->admin()->create();
+    User::factory()->admin()->count(20)->create();
+
+    $this->actingAs($admin)
+        ->get(route('admin.users.index', ['role' => UserRole::Admin->value]))
+        ->assertInertia(fn (Assert $page) => $page
+            ->has('users.data', 20)
+            ->where('users.links.next', route('admin.users.index', ['role' => 'admin', 'page' => 2]))
+        );
+});
