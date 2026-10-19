@@ -2,11 +2,9 @@
 
 namespace App\Http\Responses;
 
-use App\Enums\UserRole;
 use Illuminate\Http\JsonResponse;
 use Illuminate\Http\RedirectResponse;
 use Laravel\Fortify\Contracts\LoginResponse as LoginResponseContract;
-use Laravel\Fortify\Fortify;
 
 class LoginResponse implements LoginResponseContract
 {
@@ -19,10 +17,6 @@ class LoginResponse implements LoginResponseContract
             return new JsonResponse(['two_factor' => false]);
         }
 
-        $home = $request->user()?->hasRole(UserRole::Admin)
-            ? route('admin.dashboard')
-            : Fortify::redirects('login');
-
-        return redirect()->intended($home);
+        return redirect()->intended($request->user()?->homeUrl() ?? route('dashboard'));
     }
 }

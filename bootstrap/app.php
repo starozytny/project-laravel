@@ -1,6 +1,5 @@
 <?php
 
-use App\Enums\UserRole;
 use App\Http\Middleware\HandleAppearance;
 use App\Http\Middleware\HandleInertiaRequests;
 use Illuminate\Foundation\Application;
@@ -33,10 +32,7 @@ return Application::configure(basePath: dirname(__DIR__))
             'role_or_permission' => RoleOrPermissionMiddleware::class,
         ]);
 
-        $middleware->redirectUsersTo(fn (Request $request): string => $request->user()?->hasRole(UserRole::Admin)
-            ? route('admin.dashboard')
-            : route('dashboard')
-        );
+        $middleware->redirectUsersTo(fn (Request $request): string => $request->user()?->homeUrl() ?? route('dashboard'));
     })
     ->withExceptions(function (Exceptions $exceptions): void {
         $exceptions->shouldRenderJsonWhen(
