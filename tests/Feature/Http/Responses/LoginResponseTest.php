@@ -19,18 +19,18 @@ test('redirects developers to the dashboard after login', function () {
     $this->post(route('login.store'), [
         'email' => $developer->email,
         'password' => 'password',
-    ])->assertRedirect(route('dashboard'));
+    ])->assertRedirect(route('user.dashboard'));
 });
 
 test('sends admins back to the page they asked for before login', function () {
     $admin = User::factory()->admin()->create();
 
-    $this->get(route('dashboard'))->assertRedirect(route('login'));
+    $this->get(route('user.dashboard'))->assertRedirect(route('login'));
 
     $this->post(route('login.store'), [
         'email' => $admin->email,
         'password' => 'password',
-    ])->assertRedirect(route('dashboard'));
+    ])->assertRedirect(route('user.dashboard'));
 });
 
 test('keeps the json response of the login', function () {

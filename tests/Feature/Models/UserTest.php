@@ -13,13 +13,13 @@ test('sends admins to the admin dashboard', function () {
 test('sends users with the default role to the dashboard', function () {
     $user = User::factory()->create();
 
-    expect($user->homeUrl())->toBe(route('dashboard'));
+    expect($user->homeUrl())->toBe(route('user.dashboard'));
 });
 
 test('sends developers to the dashboard', function () {
     $developer = User::factory()->developer()->create();
 
-    expect($developer->homeUrl())->toBe(route('dashboard'));
+    expect($developer->homeUrl())->toBe(route('user.dashboard'));
 });
 
 test('gives the admin dashboard priority when the user has several roles', function () {

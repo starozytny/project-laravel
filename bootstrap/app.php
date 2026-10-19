@@ -32,7 +32,7 @@ return Application::configure(basePath: dirname(__DIR__))
             'role_or_permission' => RoleOrPermissionMiddleware::class,
         ]);
 
-        $middleware->redirectUsersTo(fn (Request $request): string => $request->user()?->homeUrl() ?? route('dashboard'));
+        $middleware->redirectUsersTo(fn (Request $request): string => $request->user()?->homeUrl() ?? route('user.dashboard'));
     })
     ->withExceptions(function (Exceptions $exceptions): void {
         $exceptions->shouldRenderJsonWhen(

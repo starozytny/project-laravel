@@ -15,5 +15,5 @@ test('redirects authenticated users away from the login page to the dashboard', 
 
     $this->actingAs($user)
         ->get(route('login'))
-        ->assertRedirect(route('dashboard'));
+        ->assertRedirect(route('user.dashboard'));
 });
