@@ -16,12 +16,13 @@ test('forbids users with the default user role', function () {
         ->assertForbidden();
 });
 
-test('forbids developers', function () {
+test('renders the admin dashboard for developers', function () {
     $developer = User::factory()->developer()->create();
 
     $this->actingAs($developer)
         ->get(route('admin.dashboard'))
-        ->assertForbidden();
+        ->assertOk()
+        ->assertInertia(fn (Assert $page) => $page->component('admin/dashboard'));
 });
 
 test('renders the admin dashboard for admins', function () {

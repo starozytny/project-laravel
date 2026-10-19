@@ -13,13 +13,13 @@ test('redirects admins to the admin dashboard after login', function () {
     $this->assertAuthenticatedAs($admin);
 });
 
-test('redirects developers to the dashboard after login', function () {
+test('redirects developers to the admin dashboard after login', function () {
     $developer = User::factory()->developer()->create();
 
     $this->post(route('login.store'), [
         'email' => $developer->email,
         'password' => 'password',
-    ])->assertRedirect(route('user.dashboard'));
+    ])->assertRedirect(route('admin.dashboard'));
 });
 
 test('sends admins back to the page they asked for before login', function () {

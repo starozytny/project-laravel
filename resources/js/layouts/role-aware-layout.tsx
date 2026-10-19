@@ -7,8 +7,8 @@ export default function RoleAwareLayout({
     children,
     ...props
 }: AppLayoutProps) {
-    const { roles } = usePage().props.auth;
-    const Layout = roles.includes('admin') ? AdminLayout : UserLayout;
+    const { abilities } = usePage().props.auth;
+    const Layout = abilities.accessAdmin ? AdminLayout : UserLayout;
 
     return <Layout {...props}>{children}</Layout>;
 }

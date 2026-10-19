@@ -57,7 +57,7 @@ class User extends Authenticatable implements PasskeyUser
      */
     public function homeUrl(): string
     {
-        if ($this->hasRole(UserRole::Admin)) {
+        if ($this->can('access-admin')) {
             return route('admin.dashboard');
         }
 

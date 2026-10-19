@@ -13,6 +13,9 @@ export type User = {
 export type Auth = {
     user: User;
     roles: string[];
+    abilities: {
+        accessAdmin: boolean;
+    }
 };
 
 export type Passkey = {
