@@ -18,7 +18,7 @@ import type { NavItem } from '@/types';
 import { NavFooter } from '@/components/nav-footer';
 
 export function UserSidebar() {
-    const { roles } = usePage().props.auth;
+    const { abilities } = usePage().props.auth;
 
     const mainNavItems: NavItem[] = [
         {
@@ -28,7 +28,7 @@ export function UserSidebar() {
         },
     ];
 
-    const footerNavItems: NavItem[] = roles.includes('admin')
+    const footerNavItems: NavItem[] = abilities.accessAdmin
         ? [
               {
                   title: 'Espace administrateur',
