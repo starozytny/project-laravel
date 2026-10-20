@@ -61,6 +61,28 @@ sail npm run dev   # ou: make hr
 
 L'app est accessible sur `APP_URL` (`http://localhost:8000` par défaut — le port doit correspondre à `APP_PORT` dans `.env`, qui vaut `80` par défaut dans `compose.yaml` si non précisé).
 
+## Initialisation des données
+
+Lance les seeders (rôles, etc.) :
+
+```bash
+sail artisan db:seed
+```
+
+Puis crée un utilisateur pour pouvoir te connecter (commande interactive : demande e-mail, nom, rôle(s) et mot de passe) :
+
+```bash
+sail artisan user:create
+```
+
+Tu peux pré-remplir nom/email/rôle(s) en option (le mot de passe est toujours demandé de façon interactive) :
+
+```bash
+sail artisan user:create --name="Admin" --email="admin@example.com" --role=admin
+```
+
+Rôles disponibles : `developer`, `admin`, `user`.
+
 ## Commandes utiles
 
 ```bash
