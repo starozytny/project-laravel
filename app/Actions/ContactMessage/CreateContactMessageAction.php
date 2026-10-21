@@ -2,7 +2,10 @@
 
 namespace App\Actions\ContactMessage;
 
+use App\Mail\ContactMessageReceived;
 use App\Models\ContactMessage;
+use Illuminate\Support\Facades\Mail;
+use Throwable;
 
 class CreateContactMessageAction
 {
@@ -11,7 +14,7 @@ class CreateContactMessageAction
      */
     public function handle(array $input): ContactMessage
     {
-        return ContactMessage::create([
+        $contactMessage = ContactMessage::create([
             'first_name' => $input['first_name'],
             'last_name' => $input['last_name'],
             'company' => $input['company'] ?? null,
@@ -19,5 +22,14 @@ class CreateContactMessageAction
             'phone' => $input['phone'],
             'message' => $input['message'],
         ]);
+
+        try {
+            Mail::to(config('mail.contact_recipient'))
+                ->send(new ContactMessageReceived($contactMessage));
+        } catch (Throwable $exception) {
+            report($exception);
+        }
+
+        return $contactMessage;
     }
 }
