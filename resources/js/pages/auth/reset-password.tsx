@@ -25,7 +25,7 @@ export default function ResetPassword({ token, email, passwordRules }: Props) {
             >
                 {({ processing, errors }) => (
                     <div className="grid gap-6">
-                        <div className="grid gap-2">
+                        <div className="hidden">
                             <Label htmlFor="email">Adresse e-mail</Label>
                             <Input
                                 id="email"
