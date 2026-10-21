@@ -59,7 +59,8 @@ export default function PasskeyRegistration({ onSuccess }: Props) {
     if (!isSupported) {
         return (
             <div className="text-sm text-muted-foreground">
-                Les clés d’accès ne sont pas prises en charge dans ce navigateur.
+                Les clés d’accès ne sont pas prises en charge dans ce
+                navigateur.
             </div>
         );
     }
@@ -89,7 +90,8 @@ export default function PasskeyRegistration({ onSuccess }: Props) {
                     autoFocus
                 />
                 <p className="text-xs text-muted-foreground">
-                    Un nom vous aide à identifier cette clé d’accès ultérieurement.
+                    Un nom vous aide à identifier cette clé d’accès
+                    ultérieurement.
                 </p>
             </div>
 
@@ -97,7 +99,9 @@ export default function PasskeyRegistration({ onSuccess }: Props) {
 
             <div className="flex gap-2">
                 <Button type="submit" disabled={isLoading || !name.trim()}>
-                    {isLoading ? 'Enregistrement...' : 'Enregistrer une clé d’accès'}
+                    {isLoading
+                        ? 'Enregistrement...'
+                        : 'Enregistrer une clé d’accès'}
                 </Button>
                 <Button type="button" variant="ghost" onClick={handleCancel}>
                     Annuler
