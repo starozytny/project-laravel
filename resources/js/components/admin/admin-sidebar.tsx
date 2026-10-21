@@ -39,7 +39,7 @@ const footerNavItems: NavItem[] = [
         icon: LayoutGrid,
     },
     {
-        title: 'Pag d\'accueil',
+        title: "Page d'accueil",
         href: home(),
         icon: Earth,
     },
