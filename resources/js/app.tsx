@@ -15,7 +15,9 @@ void createInertiaApp({
     title: (title) => (title ? `${title} - ${appName}` : appName),
     layout: (name) => {
         switch (true) {
-            case name === 'welcome' || name.startsWith('legal/'):
+            case name === 'welcome' ||
+                name.startsWith('legal/') ||
+                name.startsWith('public/'):
                 return PublicLayout;
             case name.startsWith('errors/'):
                 return null;

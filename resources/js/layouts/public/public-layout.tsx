@@ -5,6 +5,7 @@ import { PublicFooter } from '@/components/public/public-footer';
 import { Button } from '@/components/ui/button';
 
 import { home, login } from '@/routes';
+import { create as contactCreate } from '@/routes/public/contact';
 import { dashboard as dashboardAdmin } from '@/routes/admin';
 import { dashboard as dashboardUser } from '@/routes/user';
 
@@ -27,7 +28,13 @@ export default function PublicLayout({
                         <AppLogo />
                     </Link>
 
-                    <nav aria-label="Navigation principale">
+                    <nav
+                        aria-label="Navigation principale"
+                        className="flex gap-2"
+                    >
+                        <Button variant="ghost" asChild>
+                            <Link href={contactCreate()}>Contact</Link>
+                        </Button>
                         {auth.user ? (
                             <Button asChild>
                                 <Link href={dashboardHref}>Mon espace</Link>
