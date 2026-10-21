@@ -30,8 +30,8 @@ export default function DeleteUser() {
                 <div className="relative space-y-0.5 text-red-600 dark:text-red-100">
                     <p className="font-medium">Attention</p>
                     <p className="text-sm">
-                        Merci de f
-                        Veuillez faire preuve de prudence, cette action est irréversible.
+                        Merci de f Veuillez faire preuve de prudence, cette
+                        action est irréversible.
                     </p>
                 </div>
 
@@ -49,9 +49,11 @@ export default function DeleteUser() {
                             Êtes-vous sûr de vouloir supprimer votre compte ?
                         </DialogTitle>
                         <DialogDescription>
-                            Une fois votre compte supprimé, l’ensemble de ses ressources et de ses données seront
-                            également supprimées de manière définitive. Veuillez saisir votre mot de passe pour
-                            confirmer que vous souhaitez supprimer définitivement votre compte.
+                            Une fois votre compte supprimé, l’ensemble de ses
+                            ressources et de ses données seront également
+                            supprimées de manière définitive. Veuillez saisir
+                            votre mot de passe pour confirmer que vous souhaitez
+                            supprimer définitivement votre compte.
                         </DialogDescription>
 
                         <Form

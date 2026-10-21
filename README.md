@@ -6,10 +6,10 @@ Le seul prérequis pour lancer le projet est **Docker Desktop** avec l'intégrat
 
 - Docker Desktop → Settings → Resources → WSL Integration → active le toggle pour ta distro.
 - (Optionnel mais recommandé) Ajoute ton utilisateur au groupe `docker` pour éviter de préfixer chaque commande par `sudo` :
-  ```bash
-  sudo usermod -aG docker $USER
-  ```
-  Puis redémarre ton terminal (ou `newgrp docker`).
+    ```bash
+    sudo usermod -aG docker $USER
+    ```
+    Puis redémarre ton terminal (ou `newgrp docker`).
 
 ## Installation (première fois)
 
