@@ -1,5 +1,5 @@
 import { Link } from '@inertiajs/react';
-import { LayoutGrid, UserGroup } from 'lucide-react';
+import { Earth, LayoutGrid, UserGroup } from 'lucide-react';
 import AppLogo from '@/components/app-logo';
 import { NavFooter } from '@/components/nav-footer';
 import { NavMain } from '@/components/nav-main';
@@ -13,6 +13,7 @@ import {
     SidebarMenuButton,
     SidebarMenuItem,
 } from '@/components/ui/sidebar';
+import { home } from '@/routes';
 import { dashboard as dashboardUser } from '@/routes/user';
 import { dashboard as dashboardAdmin } from '@/routes/admin';
 import { index as indexUsers } from '@/routes/admin/users';
@@ -36,6 +37,11 @@ const footerNavItems: NavItem[] = [
         title: 'Espace utilisateur',
         href: dashboardUser(),
         icon: LayoutGrid,
+    },
+    {
+        title: 'Pag d\'accueil',
+        href: home(),
+        icon: Earth,
     },
 ];
 
