@@ -148,3 +148,17 @@ test('deletes a message', function (string $state) {
     $this->assertModelMissing($contactMessage);
     $this->assertModelExists($otherMessage);
 })->with(['admin', 'developer']);
+
+test('lowers the number of unread messages once a message has been shown', function () {
+    $admin = User::factory()->admin()->create();
+    $contactMessage = ContactMessage::factory()->create();
+    ContactMessage::factory()->create();
+
+    $this->actingAs($admin)
+        ->get(route('admin.contact-messages.index'))
+        ->assertInertia(fn (Assert $page) => $page->where('unreadContactMessages', 2));
+
+    $this->actingAs($admin)
+        ->get(route('admin.contact-messages.show', $contactMessage))
+        ->assertInertia(fn (Assert $page) => $page->where('unreadContactMessages', 1));
+});

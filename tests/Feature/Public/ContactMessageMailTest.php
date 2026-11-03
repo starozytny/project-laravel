@@ -89,6 +89,14 @@ test('escapes the html typed by the visitor in the email', function () {
         ->and($html)->toContain('&lt;script&gt;');
 });
 
+test('links to the message in the administration', function () {
+    $contactMessage = ContactMessage::factory()->create();
+
+    $html = (new ContactMessageReceived($contactMessage))->render();
+
+    expect($html)->toContain(route('admin.contact-messages.show', $contactMessage));
+});
+
 test('lets the recipient reply to the visitor when an email address is given', function () {
     Mail::fake();
 
