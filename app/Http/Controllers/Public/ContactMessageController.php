@@ -24,6 +24,12 @@ class ContactMessageController extends Controller
      */
     public function store(ContactMessageStoreRequest $request, CreateContactMessageAction $createContactMessageAction): RedirectResponse
     {
+        if ($request->filled('website')) {
+            Inertia::flash('toast', ['type' => 'success', 'message' => 'Votre message a été envoyé.']);
+
+            return to_route('public.contact.create');
+        }
+
         $createContactMessageAction->handle($request->validated());
 
         Inertia::flash('toast', ['type' => 'success', 'message' => 'Votre message a été envoyé.']);

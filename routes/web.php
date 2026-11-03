@@ -13,7 +13,9 @@ Route::inertia('mentions-legales', 'legal/notice')->name('legal.notice');
 Route::inertia('politique-de-confidentialite', 'legal/privacy')->name('legal.privacy');
 
 Route::get('contact', [ContactMessageController::class, 'create'])->name('public.contact.create');
-Route::post('contact', [ContactMessageController::class, 'store'])->name('public.contact.store');
+Route::post('contact', [ContactMessageController::class, 'store'])
+    ->middleware('throttle:contact')
+    ->name('public.contact.store');
 
 require __DIR__.'/settings.php';
 require __DIR__.'/admin.php';

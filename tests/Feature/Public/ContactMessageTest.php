@@ -2,6 +2,7 @@
 
 use App\Models\ContactMessage;
 use App\Models\User;
+use Illuminate\Support\Facades\Mail;
 use Inertia\Testing\AssertableInertia as Assert;
 
 /**
@@ -84,3 +85,61 @@ test('rejects invalid input without storing a message', function (array $overrid
     'too long first name' => [['first_name' => str_repeat('a', 256)], 'first_name'],
     'too long phone' => [['phone' => str_repeat('1', 31)], 'phone'],
 ]);
+
+test('ignores a message when the hidden field has been filled', function () {
+    Mail::fake();
+
+    $this->post(route('public.contact.store'), validContactInput(['website' => 'https://spam.example']))
+        ->assertRedirect(route('public.contact.create'))
+        ->assertInertiaFlash('toast', ['type' => 'success', 'message' => 'Votre message a été envoyé.']);
+
+    $this->assertDatabaseCount('contact_messages', 0);
+    Mail::assertNothingSent();
+});
+
+test('limits the number of messages a visitor can send per minute', function () {
+    Mail::fake();
+
+    $this->post(route('public.contact.store'), validContactInput());
+    $this->post(route('public.contact.store'), validContactInput());
+
+    $this->from(route('public.contact.create'))
+        ->post(route('public.contact.store'), validContactInput())
+        ->assertRedirect(route('public.contact.create'))
+        ->assertSessionHasErrors('form');
+
+    $this->assertDatabaseCount('contact_messages', 2);
+});
+
+test('limits the number of messages a visitor can send per hour', function () {
+    Mail::fake();
+
+    foreach (range(1, 10) as $attempt) {
+        $this->travel(1)->minutes();
+        $this->post(route('public.contact.store'), validContactInput())->assertRedirect(route('public.contact.create'));
+    }
+
+    $this->travel(1)->minutes();
+
+    $this->from(route('public.contact.create'))
+        ->post(route('public.contact.store'), validContactInput())
+        ->assertRedirect(route('public.contact.create'))
+        ->assertSessionHasErrors('form');
+
+    $this->assertDatabaseCount('contact_messages', 10);
+});
+
+test('does not limit a visitor because of the messages of another one', function () {
+    Mail::fake();
+
+    foreach (range(1, 2) as $attempt) {
+        $this->withServerVariables(['REMOTE_ADDR' => '203.0.113.10'])
+            ->post(route('public.contact.store'), validContactInput());
+    }
+
+    $this->withServerVariables(['REMOTE_ADDR' => '203.0.113.11'])
+        ->post(route('public.contact.store'), validContactInput())
+        ->assertSessionHasNoErrors();
+
+    $this->assertDatabaseCount('contact_messages', 3);
+});

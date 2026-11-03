@@ -1,5 +1,6 @@
 import { Form, Head } from '@inertiajs/react';
 
+import AlertError from '@/components/alert-error';
 import InputError from '@/components/input-error';
 import TextLink from '@/components/text-link';
 import { Button } from '@/components/ui/button';
@@ -35,6 +36,13 @@ export default function ContactCreate() {
                 >
                     {({ processing, errors }) => (
                         <>
+                            {errors.form && (
+                                <AlertError
+                                    title="Envoi impossible"
+                                    errors={[errors.form]}
+                                />
+                            )}
+
                             <div className="grid gap-6 sm:grid-cols-2">
                                 <div className="grid gap-2">
                                     <Label htmlFor="first_name">Prénom *</Label>
@@ -76,6 +84,20 @@ export default function ContactCreate() {
                                     autoComplete="organization"
                                 />
                                 <InputError message={errors.company} />
+                            </div>
+
+                            <div
+                                aria-hidden="true"
+                                className="absolute -left-[9999px]"
+                            >
+                                <label htmlFor="website">Ne pas remplir</label>
+                                <input
+                                    id="website"
+                                    name="website"
+                                    type="text"
+                                    tabIndex={-1}
+                                    autoComplete="off"
+                                />
                             </div>
 
                             <div className="grid gap-6 sm:grid-cols-2">
