@@ -4,6 +4,8 @@ namespace App\Models;
 
 use Database\Factories\ContactMessageFactory;
 use Illuminate\Database\Eloquent\Attributes\Fillable;
+use Illuminate\Database\Eloquent\Attributes\Scope;
+use Illuminate\Database\Eloquent\Builder;
 use Illuminate\Database\Eloquent\Factories\HasFactory;
 use Illuminate\Database\Eloquent\Model;
 use Illuminate\Support\Carbon;
@@ -54,5 +56,16 @@ class ContactMessage extends Model
         }
 
         $this->forceFill(['read_at' => now()])->save();
+    }
+
+    /**
+     * Scope a query to the messages that have not been read yet.
+     *
+     * @param  Builder<ContactMessage>  $query
+     */
+    #[Scope]
+    protected function unread(Builder $query): void
+    {
+        $query->whereNull('read_at');
     }
 }

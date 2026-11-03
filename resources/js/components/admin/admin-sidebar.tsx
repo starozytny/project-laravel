@@ -1,4 +1,4 @@
-import { Link } from '@inertiajs/react';
+import { Link, usePage } from '@inertiajs/react';
 import { Earth, LayoutGrid, UserGroup, MessageSquare } from 'lucide-react';
 import AppLogo from '@/components/app-logo';
 import { NavFooter } from '@/components/nav-footer';
@@ -22,24 +22,6 @@ import { dashboard as dashboardAdmin } from '@/routes/admin';
 import { index as indexUsers } from '@/routes/admin/users';
 import { index as indexContactMessages } from '@/routes/admin/contact-messages';
 
-const mainNavItems: NavItem[] = [
-    {
-        title: 'Tableau de bord',
-        href: dashboardAdmin(),
-        icon: LayoutGrid,
-    },
-    {
-        title: 'Utilisateurs',
-        href: indexUsers(),
-        icon: UserGroup,
-    },
-    {
-        title: 'Messages',
-        href: indexContactMessages(),
-        icon: MessageSquare,
-    },
-];
-
 const footerNavItems: NavItem[] = [
     {
         title: 'Espace utilisateur',
@@ -54,6 +36,27 @@ const footerNavItems: NavItem[] = [
 ];
 
 export function AdminSidebar() {
+    const { unreadContactMessages } = usePage().props;
+
+    const mainNavItems: NavItem[] = [
+        {
+            title: 'Tableau de bord',
+            href: dashboardAdmin(),
+            icon: LayoutGrid,
+        },
+        {
+            title: 'Utilisateurs',
+            href: indexUsers(),
+            icon: UserGroup,
+        },
+        {
+            title: 'Messages',
+            href: indexContactMessages(),
+            badge: unreadContactMessages,
+            icon: MessageSquare,
+        },
+    ];
+
     return (
         <Sidebar collapsible="icon" variant="inset">
             <SidebarHeader>
