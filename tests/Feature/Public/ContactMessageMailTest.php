@@ -48,6 +48,47 @@ test('shows the message of the visitor in the email', function () {
     $mailable->assertSeeInHtml('Bonjour, je souhaite en savoir plus.');
 });
 
+test('shows the details of the visitor in the email', function () {
+    $html = (new ContactMessageReceived(ContactMessage::factory()->create([
+        'first_name' => 'Jean',
+        'last_name' => 'Dupont',
+        'company' => 'Acme',
+        'email' => 'jean@example.com',
+        'phone' => '06 12 34 56 78',
+    ])))->render();
+
+    expect($html)->toContain('Jean Dupont')
+        ->and($html)->toContain('Acme')
+        ->and($html)->toContain('06 12 34 56 78')
+        ->and($html)->toContain('jean@example.com');
+});
+
+test('shows a placeholder for the missing company and email address', function () {
+    $html = (new ContactMessageReceived(
+        ContactMessage::factory()->withoutCompany()->withoutEmail()->create()
+    ))->render();
+
+    expect($html)->toContain('non renseignée</li>')
+        ->and($html)->toContain('non renseigné</li>');
+});
+
+test('keeps the line breaks of the message in the email', function () {
+    $html = (new ContactMessageReceived(
+        ContactMessage::factory()->create(['message' => "Première ligne\nDeuxième ligne"])
+    ))->render();
+
+    expect($html)->toContain('Première ligne<br />');
+});
+
+test('escapes the html typed by the visitor in the email', function () {
+    $html = (new ContactMessageReceived(
+        ContactMessage::factory()->create(['message' => '<script>alert(1)</script>'])
+    ))->render();
+
+    expect($html)->not->toContain('<script>alert(1)</script>')
+        ->and($html)->toContain('&lt;script&gt;');
+});
+
 test('lets the recipient reply to the visitor when an email address is given', function () {
     Mail::fake();
 

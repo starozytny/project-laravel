@@ -5,10 +5,10 @@
 
 - **Société** : {{ $contactMessage->company ?? 'non renseignée' }}
 - **Téléphone** : {{ $contactMessage->phone }}
-- **E-mail** : {{ $contactMessage->email ?? 'non renseignée' }}
+- **E-mail** : {{ $contactMessage->email ?? 'non renseigné' }}
 
 <x-mail::panel>
-    {!! nl2br(e($contactMessage->message)) !!}
+{!! nl2br(e($contactMessage->message)) !!}
 </x-mail::panel>
 
 Cordialement,<br>
