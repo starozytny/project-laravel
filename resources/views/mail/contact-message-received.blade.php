@@ -11,6 +11,10 @@
 {!! nl2br(e($contactMessage->message)) !!}
 </x-mail::panel>
 
+<x-mail::button :url="route('admin.contact-messages.show', $contactMessage)">
+Ouvrir dans l'administration
+</x-mail::button>
+
 Cordialement,<br>
 {{ config('app.name') }}
 </x-mail::message>
