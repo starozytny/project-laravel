@@ -103,16 +103,16 @@ Rôles disponibles : `developer`, `admin`, `user`. Sans rôle précisé, l'utili
 
 ## Espaces et pages
 
-| Adresse | Page | Accès |
-|---|---|---|
-| `/` | Accueil | public |
-| `/contact` | Formulaire de contact | public |
-| `/mentions-legales`, `/politique-de-confidentialite` | Pages légales | public |
-| `/login` | Connexion | visiteurs |
-| `/espace-membre` | Espace membre | utilisateur connecté |
-| `/admin` | Tableau de bord administrateur | `admin` et `developer` |
-| `/admin/utilisateurs` | Gestion des utilisateurs | `admin` et `developer` |
-| `/admin/messages` | Messages du formulaire de contact | `admin` et `developer` |
+| Adresse                                              | Page                              | Accès                  |
+| ---------------------------------------------------- | --------------------------------- | ---------------------- |
+| `/`                                                  | Accueil                           | public                 |
+| `/contact`                                           | Formulaire de contact             | public                 |
+| `/mentions-legales`, `/politique-de-confidentialite` | Pages légales                     | public                 |
+| `/login`                                             | Connexion                         | visiteurs              |
+| `/espace-membre`                                     | Espace membre                     | utilisateur connecté   |
+| `/admin`                                             | Tableau de bord administrateur    | `admin` et `developer` |
+| `/admin/utilisateurs`                                | Gestion des utilisateurs          | `admin` et `developer` |
+| `/admin/messages`                                    | Messages du formulaire de contact | `admin` et `developer` |
 
 Après connexion, un administrateur est redirigé vers `/admin`, un utilisateur simple vers `/espace-membre`. Le front ne connaît pas les noms de rôles : il lit les droits partagés par le serveur (`auth.abilities.accessAdmin`).
 
@@ -139,13 +139,13 @@ Si les ports 1025 ou 8025 sont déjà utilisés sur ta machine, change `FORWARD_
 
 Les commandes du `makefile` (`make` à la racine) enchaînent les vérifications :
 
-| Commande | Rôle |
-|---|---|
-| `make sanity-pint` | Formate le PHP (Pint) |
-| `make sanity-php` | Analyse statique PHP (PHPStan / Larastan) |
-| `make sanity-js` | Formate et vérifie le front, puis les types TypeScript |
-| `make pnpm-check` | Vérifie le front sans rien modifier |
-| `make ide-helper` | Génère les fichiers d'aide pour PhpStorm |
+| Commande           | Rôle                                                   |
+| ------------------ | ------------------------------------------------------ |
+| `make sanity-pint` | Formate le PHP (Pint)                                  |
+| `make sanity-php`  | Analyse statique PHP (PHPStan / Larastan)              |
+| `make sanity-js`   | Formate et vérifie le front, puis les types TypeScript |
+| `make pnpm-check`  | Vérifie le front sans rien modifier                    |
+| `make ide-helper`  | Génère les fichiers d'aide pour PhpStorm               |
 
 Tests (Pest) :
 
