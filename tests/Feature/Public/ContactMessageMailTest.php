@@ -77,7 +77,7 @@ test('keeps the line breaks of the message in the email', function () {
         ContactMessage::factory()->create(['message' => "Première ligne\nDeuxième ligne"])
     ))->render();
 
-    expect($html)->toContain('Première ligne<br />');
+    expect($html)->toContain('Première ligne<br>');
 });
 
 test('escapes the html typed by the visitor in the email', function () {
