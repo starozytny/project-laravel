@@ -27,6 +27,7 @@ import { AdminUser } from '@/types/admin/user';
 
 import { create, edit, index } from '@/routes/admin/users';
 import DeleteUserDialog from '@/components/admin/user/delete-user-dialog';
+import PaginationLinks from '@/components/admin/pagination-links';
 
 type Props = {
     users: Paginated<AdminUser>;
@@ -183,35 +184,7 @@ export default function UsersIndex({ users, filters, roleOptions }: Props) {
                     </Table>
                 </div>
 
-                <div className="flex items-center justify-between text-sm text-muted-foreground">
-                    <span>
-                        {meta.from ?? 0}–{meta.to ?? 0} sur {meta.total}
-                    </span>
-                    <div className="flex gap-2">
-                        {links.prev ? (
-                            <Button variant="outline" size="sm" asChild>
-                                <Link href={links.prev} preserveScroll>
-                                    Précédent
-                                </Link>
-                            </Button>
-                        ) : (
-                            <Button variant="outline" size="sm" disabled>
-                                Précédent
-                            </Button>
-                        )}
-                        {links.next ? (
-                            <Button variant="outline" size="sm" asChild>
-                                <Link href={links.next} preserveScroll>
-                                    Suivant
-                                </Link>
-                            </Button>
-                        ) : (
-                            <Button variant="outline" size="sm" disabled>
-                                Suivant
-                            </Button>
-                        )}
-                    </div>
-                </div>
+                <PaginationLinks links={links} meta={meta} />
             </div>
         </>
     );

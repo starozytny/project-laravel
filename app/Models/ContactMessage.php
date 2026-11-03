@@ -43,4 +43,16 @@ class ContactMessage extends Model
     {
         return $this->read_at !== null;
     }
+
+    /**
+     * Mark the message as read, keeping the first reading date.
+     */
+    public function markAsRead(): void
+    {
+        if ($this->isRead()) {
+            return;
+        }
+
+        $this->forceFill(['read_at' => now()])->save();
+    }
 }

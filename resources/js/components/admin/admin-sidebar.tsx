@@ -1,5 +1,5 @@
 import { Link } from '@inertiajs/react';
-import { Earth, LayoutGrid, UserGroup } from 'lucide-react';
+import { Earth, LayoutGrid, UserGroup, MessageSquare } from 'lucide-react';
 import AppLogo from '@/components/app-logo';
 import { NavFooter } from '@/components/nav-footer';
 import { NavMain } from '@/components/nav-main';
@@ -13,11 +13,14 @@ import {
     SidebarMenuButton,
     SidebarMenuItem,
 } from '@/components/ui/sidebar';
+
+import type { NavItem } from '@/types';
+
 import { home } from '@/routes';
 import { dashboard as dashboardUser } from '@/routes/user';
 import { dashboard as dashboardAdmin } from '@/routes/admin';
 import { index as indexUsers } from '@/routes/admin/users';
-import type { NavItem } from '@/types';
+import { index as indexContactMessages } from '@/routes/admin/contact-messages';
 
 const mainNavItems: NavItem[] = [
     {
@@ -29,6 +32,11 @@ const mainNavItems: NavItem[] = [
         title: 'Utilisateurs',
         href: indexUsers(),
         icon: UserGroup,
+    },
+    {
+        title: 'Messages',
+        href: indexContactMessages(),
+        icon: MessageSquare,
     },
 ];
 
